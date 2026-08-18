@@ -1,7 +1,8 @@
-RIGHTS_FILE="$DATA_DIR/rights.toml"
-if [ ! -f "$RIGHTS_FILE" ]; then
-    cat > "$RIGHTS_FILE" <<'RIGHTS'
-+* = "*"
-RIGHTS
-    chmod 600 "$RIGHTS_FILE" 2>/dev/null || true
-fi
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "/usr/local/bin/railway-entrypoint.sh"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
