@@ -137,8 +137,16 @@ EOF
 
 chmod 600 "$CONFIG" 2>/dev/null || true
 
-# The upstream/community image uses /app/data as its working directory.
-# Keep that invariant so relative paths (db, bots, rights, plugins) resolve correctly.
+# Generate rights.toml if missing — prevents interactive console prompt crash on Railway.
+RIGHTS_FILE="$DATA_DIR/rights.toml"
+if [ ! -f "$RIGHTS_FILE" ]; then
+    cat > "$RIGHTS_FILE" <<'RIGHTS'
+[*]
+"+" = ["*"]
+RIGHTS
+    chmod 600 "$RIGHTS_FILE" 2>/dev/null || true
+fi
+
 cd "$DATA_DIR"
 
 printf '%s\n' "=============================================="
